@@ -6,7 +6,6 @@ from aoc_helper import main
 
 #import day methods
 from collections import Counter
-import numpy as np
 new_fish = 8
 birth_fish = 6
 
@@ -20,14 +19,14 @@ def evolve_fish(fishes):
 #day calculation
 def a(data):
     days = 80
-    fishes = Counter([np.int64(t) for t in data[0].split(',')])
+    fishes = Counter([int(t) for t in data[0].split(',')])
     for _ in range(days):
         fishes = evolve_fish(fishes)
     return sum(fishes.values())
 
 def b(data):
     days = 256
-    fishes = Counter([np.int64(t) for t in data[0].split(',')])
+    fishes = Counter([int(t) for t in data[0].split(',')])
     for _ in range(days):
         fishes = evolve_fish(fishes)
     return sum(fishes.values())
