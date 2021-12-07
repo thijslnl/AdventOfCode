@@ -6,7 +6,6 @@ from aoc_helper import main
 
 #import day methods
 from statistics import median
-from math import factorial
 
 def moves_a(hpos, tpos):
     moves = [sum([abs(i-target) for i in hpos]) for target in [tpos-1, tpos, tpos+1]]
