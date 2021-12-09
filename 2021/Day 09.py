@@ -7,7 +7,6 @@ sys.path.append(parentdir)
 from aoc_helper import main
 
 #import day methods
-import numpy as np
 
 def find_low_points(field):
     checks = [[-1,0],[1,0],[0,-1],[0,1]]
