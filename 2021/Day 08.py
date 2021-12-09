@@ -65,7 +65,7 @@ def b(data):
                 value[5] = val
             elif not_used[0] not in value[1]:
                 value[3] = val
-        value = {v:k for k,v  in value.items()}
+        value = {v:k for k,v in value.items()}
         output += int(''.join([str(value[x]) for x in o]))
     return output
 
