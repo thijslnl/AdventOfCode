@@ -37,7 +37,7 @@ def b(data):
                 openers.append(char)
             elif pairs[openers[-1]] == char:
                 openers.pop(-1)
-        closed = [autocomplete_scores[pairs[x]] for x in reversed(openers) if x in pairs]
+        closed = [autocomplete_scores[pairs[x]] for x in reversed(openers)]
         line_score = 0
         for score in closed:
             line_score = line_score*5+score
