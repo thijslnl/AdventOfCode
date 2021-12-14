@@ -5,7 +5,6 @@ from numpy.lib.polynomial import poly
 parentdir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parentdir)
 from aoc_helper import main
-from time import perf_counter
 
 #import day methods asd
 from collections import Counter
