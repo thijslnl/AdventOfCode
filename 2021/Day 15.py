@@ -10,9 +10,9 @@ def calc_distances(grid, start, goal):
     distances = {position: float('inf') for position in grid}
     distances[start] = 0
 
-    pq = [(0, start)]
-    while len(pq) > 0:
-        pos_distance, current_pos = heapq.heappop(pq)
+    ab = [(0, start)]
+    while len(ab) > 0:
+        pos_distance, current_pos = heapq.heappop(ab)
         if pos_distance > distances[current_pos]:
             continue
 
@@ -20,7 +20,7 @@ def calc_distances(grid, start, goal):
             distance = pos_distance + weight
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
-                heapq.heappush(pq, (distance, neighbor))
+                heapq.heappush(ab, (distance, neighbor))
 
     return distances[goal]
 
