@@ -10,46 +10,13 @@ import numpy as np
 def handle_packet(packet, s, e):
     return (packet[s:e], packet[e:])
 
-def parse_packet_a(packet, versions, inner_call=0):
+def parse_packet(packet, versions, inner_call=0):
     packet_length = len(packet)
     packet_version, packet = handle_packet(packet, 0, 3)
     packet_type, packet = handle_packet(packet, 0, 3)
+    packet_type = int(packet_type, 2)
     versions.append(int(packet_version, 2))
-    if packet_type == '100':
-        _, packet = handle_literal_value(packet)
-    else:
-        packet_length_type, packet = handle_packet(packet, 0, 1)
-        if packet_length_type == '1':
-            n_subpackets, packet = handle_packet(packet, 0, 11)
-            n_subpackets = int(n_subpackets, 2)
-            for _ in range(n_subpackets):
-                packet, versions = parse_packet_a(packet, versions, 1)
-        else:
-            n_bits, packet = handle_packet(packet, 0, 15)
-            n_bits = int(n_bits, 2)
-            current_packet_length = len(packet)
-            new_packet = packet
-            while len(new_packet) > current_packet_length-n_bits:
-                new_packet, versions = parse_packet_a(new_packet, versions, 1)
-            packet = new_packet
-    if inner_call:
-        return (packet, versions)
-    else:
-        padding = (4 - (packet_length-len(packet)) % 4 ) % 4
-        packet = packet[padding:]
-        if packet:
-            if int(packet, 2) == 0:
-                return (packet, versions)
-            else:
-                parse_packet_a(packet, versions)
-        else:
-            return (packet, versions)
-
-def parse_packet_b(packet, inner_call=0):
-    packet_length = len(packet)
-    _, packet = handle_packet(packet, 0, 3)
-    packet_type, packet = handle_packet(packet, 0, 3)
-    if packet_type == '100':
+    if packet_type == 4:
         value, packet = handle_literal_value(packet)
     else:
         packet_length_type, packet = handle_packet(packet, 0, 1)
@@ -58,36 +25,32 @@ def parse_packet_b(packet, inner_call=0):
             n_subpackets = int(n_subpackets, 2)
             sub_values = []
             for _ in range(n_subpackets):
-                packet, sub_value = parse_packet_b(packet, 1)
+                packet, versions, sub_value = parse_packet(packet, versions, 1)
                 sub_values.append(sub_value)
             value = handle_values(packet_type, sub_values)
         else:
             n_bits, packet = handle_packet(packet, 0, 15)
             n_bits = int(n_bits, 2)
             current_packet_length = len(packet)
-            new_packet = packet
             sub_values = []
-            while len(new_packet) > current_packet_length-n_bits:
-                new_packet, sub_value = parse_packet_b(new_packet, 1)
+            while len(packet) > current_packet_length-n_bits:
+                packet, versions, sub_value = parse_packet(packet, versions, 1)
                 sub_values.append(sub_value)
             value = handle_values(packet_type, sub_values)
-            packet = new_packet
     if inner_call:
-        return (packet, value)
+        return (packet, versions, value)
     else:
         padding = (4 - (packet_length-len(packet)) % 4 ) % 4
         packet = packet[padding:]
         if packet:
             if int(packet, 2) == 0:
-                return (packet, value)
+                return (packet, versions, value)
             else:
-                parse_packet_b(packet, value)
+                parse_packet(packet, versions)
         else:
-            return (packet, value)
-    return True
+            return (packet, versions, value)
 
 def handle_values(type, sub_values):
-    type = int(type, 2)
     if type == 0:
         value = sum(sub_values)
     elif type == 1:
@@ -119,13 +82,13 @@ def handle_literal_value(packet):
 def a(data):
     packet = data[0]
     bits = str(bin(int(packet, 16))[2:].zfill(len(packet)*4))
-    _, versions = parse_packet_a(bits, [])
+    _, versions, _ = parse_packet(bits, [])
     return sum(versions)
 
 def b(data):
     packet = data[0]
     bits = str(bin(int(packet, 16))[2:].zfill(len(packet)*4))
-    _, value = parse_packet_b(bits, [])
+    _, _, value = parse_packet(bits, [])
     return value
 
 #run script
