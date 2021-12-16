@@ -20,14 +20,14 @@ def main(year, day, exampleOutput, funcs):
             exampleTime[step] = 0
         else:
             startTime = perf_counter()
-            exampleResult[step] = func(exampleData)
+            exampleResult[step] = func(exampleData[:])
             stopTime = perf_counter()
             exampleTime[step] = stopTime - startTime
 
         print(f'Example: {exampleResult[step]} [{exampleOutput[step]}] in {exampleTime[step]:.5f}s')
         if exampleResult[step] == exampleOutput[step]:
             startTime = perf_counter()
-            inputResult[step] = func(inputData)
+            inputResult[step] = func(inputData[:])
             stopTime = perf_counter()
             inputTime[step] = stopTime - startTime
             print(f'Input: {inputResult[step]} in {inputTime[step]:.5f}s')

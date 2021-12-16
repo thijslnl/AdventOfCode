@@ -17,7 +17,7 @@ def get_rules(data):
         rules[pair] = insert
     return rules
 
-def dev_polymer(rules, polymers, letter_count, steps, step):
+def dev_polymer(rules, polymers, letter_count):
     new_polymers = defaultdict(int)
     for polymer, count in polymers.items():
         insert_letter = rules[polymer]
@@ -25,20 +25,18 @@ def dev_polymer(rules, polymers, letter_count, steps, step):
         letter_count[insert_letter] += count
         for rule in new_pairs:
             new_polymers[rule] += count
-    polymers = new_polymers
-    if step < steps:
-        polymers, letter_count = dev_polymer(rules, polymers, letter_count, steps, step+1)
-    return (polymers, letter_count)
+    return (new_polymers, letter_count)
 
 def run_day(data, steps):
-    day_data = data[:]
-    polymer = day_data.pop(0)
+    #day_data = data[:]
+    polymer = data.pop(0)
     letter_count = Counter(polymer)
     polymers = Counter([polymer[i:i+2] for i in range(len(polymer)-1)])
-    if day_data[0] == '':
-        day_data.pop(0)
-    rules = get_rules(day_data)
-    polymers, letter_count = dev_polymer(rules, polymers, letter_count, steps, 1)
+    if not data[0]:
+        data.pop(0)
+    rules = get_rules(data)
+    for _ in range(steps):
+        polymers, letter_count = dev_polymer(rules, polymers, letter_count)
     return letter_count.most_common()
 
 #day calculation
