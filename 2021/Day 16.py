@@ -16,13 +16,13 @@ def parse_packet_a(packet, versions, inner_call=0):
     packet_type, packet = handle_packet(packet, 0, 3)
     versions.append(int(packet_version, 2))
     if packet_type == '100':
-        literal_value, packet = handle_literal_value(packet)
+        _, packet = handle_literal_value(packet)
     else:
         packet_length_type, packet = handle_packet(packet, 0, 1)
         if packet_length_type == '1':
             n_subpackets, packet = handle_packet(packet, 0, 11)
             n_subpackets = int(n_subpackets, 2)
-            for i in range(n_subpackets):
+            for _ in range(n_subpackets):
                 packet, versions = parse_packet_a(packet, versions, 1)
         else:
             n_bits, packet = handle_packet(packet, 0, 15)
@@ -57,7 +57,7 @@ def parse_packet_b(packet, inner_call=0):
             n_subpackets, packet = handle_packet(packet, 0, 11)
             n_subpackets = int(n_subpackets, 2)
             sub_values = []
-            for i in range(n_subpackets):
+            for _ in range(n_subpackets):
                 packet, sub_value = parse_packet_b(packet, 1)
                 sub_values.append(sub_value)
             value = handle_values(packet_type, sub_values)
@@ -130,4 +130,4 @@ def b(data):
 
 #run script
 if __name__ == '__main__': 
-    main(year=2021, day=16, exampleOutput={'A':16, 'B':3}, funcs={'a': a, 'b': b})
+    main(year=2021, day=16, exampleOutput={'A':14, 'B':3}, funcs={'a': a, 'b': b})
