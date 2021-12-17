@@ -15,7 +15,7 @@ def a(data):
     max_y = max(y)
     min_y = min(y)
     
-    steps = {int(i):int(1/2*i*(i+1)) for i in range(min_y, 4500)}
+    steps = {int(i):int(1/2*i*(i+1)) for i in range(min_y, -min_y+1)}
     y_steps = set()
     for i in steps:
         min_i = steps[i]-max_y
@@ -34,7 +34,7 @@ def b(data):
     max_x = max(x)
     min_x = min(x)
 
-    steps = {int(i):int(1/2*i*(i+1)) for i in range(min_y, 4500)}
+    steps = {int(i):int(1/2*i*(i+1)) for i in range(min_y, -min_y+1)}
 
     velo_min_x = math.floor((min_x*2)**(1/2))
     y_steps = set()
