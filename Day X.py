@@ -15,4 +15,4 @@ def b(data):
 
 #run script
 if __name__ == '__main__': 
-    main(year=2015, day=1, exampleOutput={'A':None, 'B':None}, funcs={'a': a, 'b': b})
+    main(year=2022, day=1, exampleOutput={'A':None, 'B':None}, funcs={'a': a, 'b': b})
