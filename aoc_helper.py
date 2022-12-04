@@ -24,21 +24,21 @@ def main(year, day, exampleOutput, funcs):
             stopTime = perf_counter()
             exampleTime[step] = stopTime - startTime
 
-        print(f'Example: {exampleResult[step]} [{exampleOutput[step]}] in {exampleTime[step]:.5f}s')
+        print(f'Example: {exampleResult[step]} [{exampleOutput[step]}] in {exampleTime[step]:.6f}s')
+
         if exampleResult[step] == exampleOutput[step]:
             startTime = perf_counter()
             inputResult[step] = func(inputData[:])
             stopTime = perf_counter()
             inputTime[step] = stopTime - startTime
-            print(f'Input: {inputResult[step]} in {inputTime[step]:.5f}s')
+            print(f'Input: {inputResult[step]} in {inputTime[step]:.6f}s')
             
         print('')
 
 def loadFile(filename):
     try:
         with open(filename) as file:
-            lines = file.readlines()
-            lines = [line.rstrip() for line in lines]
+            lines = [line.rstrip() for line in file.readlines()]
     except FileNotFoundError:
         lines = []
     return lines
