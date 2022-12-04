@@ -5,16 +5,18 @@ sys.path.append(parentdir)
 from aoc_helper import main
 
 #import day methods
+def prep_line(line:str) -> list:
+    res = []
+    for l in line.split(','):
+        l = [int(i) for i in l.split('-')]
+        res.append(range(l[0], l[1]+1))
+    return res
 
 #day calculation
 def a(data):
     contain = 0
     for line in data:
-        a, b = line.split(',')
-        a = [int(i) for i in a.split('-')]
-        b = [int(i) for i in b.split('-')]
-        a = range(a[0], a[1]+1)
-        b = range(b[0], b[1]+1)
+        a, b = prep_line(line)
         if all(x in b for x in a) or all(x in a for x in b):
             contain += 1
     return contain
@@ -22,11 +24,7 @@ def a(data):
 def b(data):
     overlap = 0
     for line in data:
-        a, b = line.split(',')
-        a = [int(i) for i in a.split('-')]
-        b = [int(i) for i in b.split('-')]
-        a = range(a[0], a[1]+1)
-        b = range(b[0], b[1]+1)
+        a, b = prep_line(line)
         if any(x in b for x in a) or any(x in a for x in b):
             overlap += 1
     return overlap
