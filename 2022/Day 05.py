@@ -7,16 +7,17 @@ from aoc_helper import main
 #import day methods'
 def split_input(data:list) -> tuple:
     start = []
-    com = []
     sit = None
-    for line in data:
+    for i, line in enumerate(data):
         if sit == None:
             if line != '':
+                
                 start.append(line)
             elif line == '':
                 sit = start_arrangement(start)
         else:
-            com.append(line)
+            break
+    com = data[i:]
     return (sit, com)
 
 def start_arrangement(data:list) -> list:
@@ -33,25 +34,25 @@ def prep_line(line:str) -> tuple:
     words = line.split(' ')
     return (int(words[1]), int(words[3]), int(words[5]))
 
+def transfer(sit:list, line:str, dir:int) -> list:
+    n, a, b = prep_line(line)
+    for x in sit[a-1][-n:][::dir]:
+        sit[b-1].append(x)
+    sit[a-1] = sit[a-1][:-n]
+    return sit
+
 #day calculation
 def a(data):
     sit, com = split_input(data)
     for line in com:
-        n, a, b = prep_line(line)
-        for _ in range(n):
-            sit[b-1].append(sit[a-1].pop())
+        sit = transfer(sit, line, -1)
     res = ''.join([x[-1] for x in sit])
     return res
 
 def b(data):
     sit, com = split_input(data)
     for line in com:
-        n, a, b = prep_line(line)
-        temp = []
-        for _ in range(n):
-            temp.append(sit[a-1].pop())
-        for t in temp[::-1]:
-            sit[b-1].append(t)
+        sit = transfer(sit, line, 1)
     res = ''.join([x[-1] for x in sit])
     return res
 
