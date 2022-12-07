@@ -16,11 +16,11 @@ def run_dirs(data:list) -> dict:
                 sizes['_'.join(current_folder)] = 0
             else: 
                 current_folder.pop()
-        elif line[:4] != '$ ls':
+        else:
             a, _ = line.split(' ', 1)
             if a.isnumeric():
-                for i in range(len(current_folder)):
-                    sizes['_'.join(current_folder[:i+1])] += int(a)
+                for i, _ in enumerate(current_folder, start=1):
+                    sizes['_'.join(current_folder[:i])] += int(a)
     return sizes
 
 #day calculation
