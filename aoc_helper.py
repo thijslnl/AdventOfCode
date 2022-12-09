@@ -23,8 +23,7 @@ def main(year, day, exampleOutput, funcs):
             exampleResult[step] = func(exampleData[:])
             stopTime = perf_counter()
             exampleTime[step] = stopTime - startTime
-
-        print(f'Example: {exampleResult[step]} [{exampleOutput[step]}] in {exampleTime[step]:.6f}s')
+            print(f'Example: {exampleResult[step]} [{exampleOutput[step]}] in {exampleTime[step]:.6f}s')
 
         if exampleResult[step] == exampleOutput[step]:
             startTime = perf_counter()

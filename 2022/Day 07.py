@@ -39,4 +39,4 @@ def b(data):
 
 #run script
 if __name__ == '__main__': 
-    main(year=2022, day=7, exampleOutput={'A':95437, 'B':24933642}, funcs={'a': a, 'b': b})
+    main(year=2022, day=7, exampleOutput={'A': None, 'B':24933642}, funcs={'a': a, 'b': b})
