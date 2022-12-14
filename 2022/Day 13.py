@@ -13,18 +13,16 @@ def match_pairs(data:list) -> list:
         pairs.append(data[i:i+2])
     return pairs
 
-def make_list(item) -> list:
+def handle_item(item):
+    if isinstance(item, str):
+        item = json.loads(item)
     if not isinstance(item, list):
         item = [item]
     return item
 
 def compare_values(item1, item2) -> int:
-    if isinstance(item1, str):
-        item1 = json.loads(item1)
-    if isinstance(item2, str):
-        item2 = json.loads(item2)
-    item1 = make_list(item1)
-    item2 = make_list(item2)
+    item1 = handle_item(item1)
+    item2 = handle_item(item2)
     values = list(zip(item1, item2))
     item1_len = len(item1)
     item2_len = len(item2)
